@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>富士山與東京之旅</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFCF6; --ink:#3E3A39; --coral:#F2A497; --yellow:#F6D27A; --sky:#A8D3E6; --green:#B9DAA5;
+  --coral-l:#FBE3DE; --yellow-l:#FCF1D3; --sky-l:#E3F1F7; --green-l:#E7F2E0; --mute:#8A8482;
+  --line:3px solid var(--ink); --r:22px; --r-s:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Huninn","PingFang TC","Noto Sans TC",sans-serif;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+
+/* ===== 頂端選單 ===== */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;background:var(--paper);border-bottom:var(--line)}
+.nav ul{display:flex;gap:6px;list-style:none;margin:0 auto;padding:10px 12px;max-width:760px;overflow-x:auto;scrollbar-width:none}
+.nav ul::-webkit-scrollbar{display:none}
+.nav a{display:block;white-space:nowrap;text-decoration:none;padding:4px 12px;border:2px solid var(--ink);border-radius:999px;font-size:14px;background:#fff}
+.nav a.on{background:var(--yellow)}
+
+main{max-width:760px;margin:0 auto;padding:76px 16px 48px}
+section{margin-top:36px}
+h2{font-size:22px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+h2 .dot{width:14px;height:14px;border:var(--line);border-radius:50%;display:inline-block}
+.card{background:#fff;border:var(--line);border-radius:var(--r);padding:16px}
+.muted{color:var(--mute);font-size:14px}
+
+/* ===== 首頁 ===== */
+.hero{margin-top:8px;background:var(--sky-l);border:var(--line);border-radius:var(--r);overflow:hidden;text-align:center}
+.hero svg{display:block;width:100%;height:auto}
+.hero-body{padding:4px 16px 20px}
+.hero h1{font-size:28px;margin:0;line-height:1.3}
+.hero .sub{margin:6px 0 14px}
+.count{display:flex;justify-content:center;gap:8px}
+.count div{background:#fff;border:var(--line);border-radius:var(--r-s);min-width:64px;padding:6px 4px}
+.count b{display:block;font-size:26px;line-height:1.1}
+.count span{font-size:12px}
+
+/* 插圖動畫 */
+.float{animation:float 4s ease-in-out infinite}
+.drift{animation:drift 14s linear infinite}
+.drift2{animation:drift 20s linear infinite;animation-delay:-8s}
+.spin{transform-box:fill-box;transform-origin:center;animation:spin 18s linear infinite}
+.run{animation:run 7s ease-in-out infinite}
+.blink{animation:blink 2.4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+@keyframes drift{from{transform:translateX(-60px)}to{transform:translateX(440px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes run{0%,100%{transform:translateX(0)}50%{transform:translateX(26px)}}
+@keyframes blink{50%{opacity:.35}}
+
+/* ===== 航班 ===== */
+.flights{display:grid;gap:14px}
+.flight{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;text-align:center}
+.flight .code{font-size:26px;line-height:1.1}
+.flight .t{font-size:22px}
+.flight-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.pill{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:0 10px;font-size:13px;background:#fff}
+.flight .plane{width:56px}
+
+/* ===== 每日行程 ===== */
+.days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day-btn{flex:0 0 auto;width:62px;border:var(--line);border-radius:var(--r-s);background:#fff;padding:6px 0;cursor:pointer;line-height:1.2}
+.day-btn b{display:block;font-size:18px}
+.day-btn span{font-size:12px}
+.day-btn.on{background:var(--coral)}
+.day-panel.bounce{animation:bounce .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bounce{0%{transform:translateY(14px) scale(.97);opacity:0}100%{transform:none;opacity:1}}
+.day-title{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.day-title svg{width:64px;height:64px;flex:0 0 auto}
+.day-title h3{margin:0;font-size:20px;line-height:1.3}
+.day-title p{margin:2px 0 0}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:62px;top:8px;bottom:8px;border-left:3px dashed var(--ink)}
+.tl li{display:grid;grid-template-columns:52px 1fr;gap:22px;padding:8px 0;position:relative}
+.tl li::before{content:"";position:absolute;left:55px;top:15px;width:11px;height:11px;border:3px solid var(--ink);border-radius:50%;background:var(--paper)}
+.tl li.key::before{background:var(--coral)}
+.tl time{font-size:14px;text-align:right;padding-top:2px}
+.tl .what{font-size:16px}
+.tl .note{display:block;font-size:13px;color:var(--mute)}
+.tag{display:inline-block;font-size:12px;border:2px solid var(--ink);border-radius:999px;padding:0 8px;margin-right:4px;vertical-align:2px}
+.t-train{background:var(--sky)} .t-bus{background:var(--yellow)} .t-car{background:var(--green)} .t-plane{background:var(--coral)} .t-walk{background:#fff}
+.must{display:inline-block;font-size:12px;background:var(--coral);border:2px solid var(--ink);border-radius:6px;padding:0 6px;margin-left:4px;transform:rotate(-4deg);vertical-align:2px}
+.todo-tag{display:inline-block;font-size:12px;background:var(--yellow-l);border:2px dashed var(--ink);border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:2px}
+
+/* ===== 待辦 ===== */
+.todos{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.todos label{display:flex;gap:10px;align-items:flex-start;background:#fff;border:var(--line);border-radius:var(--r-s);padding:10px 12px;cursor:pointer}
+.todos input{appearance:none;flex:0 0 auto;width:24px;height:24px;border:var(--line);border-radius:8px;margin:0;background:#fff;display:grid;place-content:center;cursor:pointer}
+.todos input:checked{background:var(--green)}
+.todos input:checked::after{content:"✓";font-size:16px;line-height:1}
+.todos input:checked + span{text-decoration:line-through;color:var(--mute)}
+.todos .when{display:block;font-size:13px;color:var(--mute)}
+.progress{height:16px;border:var(--line);border-radius:999px;background:#fff;overflow:hidden;margin-bottom:12px}
+.progress i{display:block;height:100%;background:var(--green);border-right:3px solid var(--ink);transition:width .4s}
+
+/* ===== 住宿 ===== */
+.stays{display:grid;gap:12px}
+.stay{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
+.stay .ic{width:52px;height:52px;border:var(--line);border-radius:var(--r-s);display:grid;place-content:center}
+.stay h3{margin:0;font-size:17px;line-height:1.35}
+.stay p{margin:2px 0 0;font-size:14px}
+
+/* ===== 記帳 ===== */
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sum-grid div{border:var(--line);border-radius:var(--r-s);padding:8px;text-align:center;background:#fff}
+.sum-grid b{display:block;font-size:18px;line-height:1.2}
+.sum-grid span{font-size:12px}
+.settle{border:var(--line);border-radius:var(--r-s);background:var(--yellow-l);padding:10px 12px;text-align:center;font-size:17px;margin-bottom:16px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .full{grid-column:1/-1}
+.form label{display:block;font-size:13px;margin-bottom:2px}
+.form input,.form select{width:100%;border:var(--line);border-radius:12px;padding:8px 10px;background:#fff;min-height:44px}
+.seg{display:flex;border:var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.seg button{flex:1;border:0;background:none;padding:8px 4px;cursor:pointer;min-height:40px;font-size:14px}
+.seg button+button{border-left:2px solid var(--ink)}
+.seg button.on{background:var(--sky)}
+.btn{border:var(--line);border-radius:999px;background:var(--coral);padding:8px 18px;cursor:pointer;min-height:44px}
+.btn.ghost{background:#fff}
+.btn:active{transform:translateY(2px)}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap}
+.preview{font-size:14px;background:var(--sky-l);border-radius:12px;padding:6px 10px}
+.list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.item{background:#fff;border:var(--line);border-radius:var(--r-s);padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:2px 10px}
+.item .name{font-size:15px}
+.item .amt{text-align:right;font-size:16px}
+.item .meta,.item .split{font-size:12px;color:var(--mute)}
+.item .split{text-align:right}
+.item .acts{grid-column:1/-1;display:flex;gap:6px;justify-content:flex-end;margin-top:4px}
+.item .acts button{border:2px solid var(--ink);border-radius:999px;background:#fff;font-size:12px;padding:2px 10px;cursor:pointer}
+.cat{display:inline-block;font-size:11px;border:2px solid var(--ink);border-radius:999px;padding:0 6px;margin-right:4px}
+.filters{display:flex;gap:6px;overflow-x:auto;margin-top:16px;scrollbar-width:none}
+.filters button{flex:0 0 auto;border:2px solid var(--ink);border-radius:999px;background:#fff;padding:2px 12px;font-size:13px;cursor:pointer}
+.filters button.on{background:var(--yellow)}
+details.tools{margin-top:16px}
+details.tools summary{cursor:pointer;font-size:14px}
+details.tools .row-btns{margin-top:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:#fff;border:var(--line);border-radius:999px;padding:8px 18px;z-index:60;transition:transform .3s}
+.toast.show{transform:translateX(-50%) translateY(0)}
+footer{text-align:center;margin-top:40px}
+
+@media (min-width:600px){
+  .hero h1{font-size:34px}
+  .flights{grid-template-columns:1fr 1fr}
+}
+
+/* 減少動態效果 */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="主選單">
+  <ul>
+    <li><a href="#home" class="on">首頁</a></li>
+    <li><a href="#flight">航班</a></li>
+    <li><a href="#plan">每日行程</a></li>
+    <li><a href="#todo">待辦</a></li>
+    <li><a href="#stay">住宿</a></li>
+    <li><a href="#money">記帳</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ===== 首頁 ===== -->
+<section id="home" style="margin-top:0">
+  <div class="hero">
+    <svg viewBox="0 0 380 210" role="img" aria-label="富士山、東京鐵塔和高速巴士的插圖">
+      <rect width="380" height="210" fill="#E3F1F7"/>
+      <!-- 太陽 -->
+      <g class="spin"><circle cx="320" cy="42" r="20" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/>
+        <g stroke="#3E3A39" stroke-width="3" stroke-linecap="round">
+          <line x1="320" y1="10" x2="320" y2="16"/><line x1="320" y1="68" x2="320" y2="74"/>
+          <line x1="288" y1="42" x2="294" y2="42"/><line x1="346" y1="42" x2="352" y2="42"/>
+        </g></g>
+      <!-- 雲 -->
+      <g class="drift"><path d="M10 52 q0-12 14-12 q4-10 16-8 q10-6 18 4 q12 0 12 10 z" fill="#fff" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/></g>
+      <g class="drift2"><path d="M0 92 q0-10 12-10 q4-8 14-6 q8-5 14 3 q10 0 10 9 z" fill="#fff" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/></g>
+      <!-- 富士山 -->
+      <g class="float">
+        <path d="M70 168 L160 58 Q170 48 180 58 L270 168 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M137 86 L160 58 Q170 48 180 58 L203 86 L190 80 L180 92 L170 80 L160 92 L150 80 Z" fill="#fff" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+      </g>
+      <!-- 東京鐵塔 -->
+      <g transform="translate(300 64)">
+        <path d="M20 0 L24 0 L40 104 L4 104 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="10" y="40" width="24" height="8" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="3"/>
+        <rect x="5" y="76" width="34" height="8" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="3"/>
+        <circle class="blink" cx="22" cy="-4" r="3" fill="#F2A497" stroke="#3E3A39" stroke-width="2"/>
+      </g>
+      <!-- 湖與地面 -->
+      <path d="M0 168 H380 V210 H0 Z" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3"/>
+      <path d="M30 178 Q90 172 150 178 Q120 188 60 186 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/>
+      <!-- 高速巴士 -->
+      <g class="run" transform="translate(186 150)">
+        <rect x="0" y="0" width="86" height="34" rx="10" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/>
+        <rect x="8" y="7" width="16" height="12" rx="3" fill="#fff" stroke="#3E3A39" stroke-width="2.5"/>
+        <rect x="28" y="7" width="16" height="12" rx="3" fill="#fff" stroke="#3E3A39" stroke-width="2.5"/>
+        <rect x="48" y="7" width="16" height="12" rx="3" fill="#fff" stroke="#3E3A39" stroke-width="2.5"/>
+        <rect x="68" y="7" width="12" height="20" rx="3" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5"/>
+        <circle cx="20" cy="36" r="7" fill="#3E3A39"/><circle cx="66" cy="36" r="7" fill="#3E3A39"/>
+      </g>
+    </svg>
+    <div class="hero-body">
+      <h1>東京・河口湖<br>10 天 9 夜</h1>
+      <p class="sub">12/11（五）– 12/20（日）・1豬 & 定遠</p>
+      <div class="count" id="count" aria-live="polite">
+        <div><b id="cd-d">--</b><span>天</span></div>
+        <div><b id="cd-h">--</b><span>時</span></div>
+        <div><b id="cd-m">--</b><span>分</span></div>
+      </div>
+      <p class="muted" id="cd-label" style="margin:8px 0 0">距離高雄起飛（12/11 15:10）</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 航班 ===== -->
+<section id="flight">
+  <h2><span class="dot" style="background:var(--coral)"></span>航班</h2>
+  <div class="flights">
+    <div class="card">
+      <div class="flight-head"><span class="pill" style="background:var(--coral-l)">去程 12/11（五）</span><span class="muted">捷星日本</span></div>
+      <div class="flight">
+        <div><div class="code">KHH</div><div class="t">15:10</div><div class="muted">高雄</div></div>
+        <div><svg class="plane float" viewBox="0 0 56 30" aria-hidden="true"><path d="M2 16 L40 14 Q54 14 54 16 Q54 18 40 18 Z M22 15 L14 3 L20 3 L32 15 Z M22 17 L14 28 L20 28 L32 17 Z M4 16 L2 8 L7 8 L12 15 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/></svg><div><b>GK018</b></div></div>
+        <div><div class="code">NRT</div><div class="t">19:40</div><div class="muted">成田 第三航廈</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flight-head"><span class="pill" style="background:var(--sky-l)">回程 12/20（日）</span><span class="muted">泰國亞航</span></div>
+      <div class="flight">
+        <div><div class="code">NRT</div><div class="t">13:30</div><div class="muted">成田 第二航廈</div></div>
+        <div><svg class="plane float" viewBox="0 0 56 30" aria-hidden="true"><path d="M2 16 L40 14 Q54 14 54 16 Q54 18 40 18 Z M22 15 L14 3 L20 3 L32 15 Z M22 17 L14 28 L20 28 L32 17 Z M4 16 L2 8 L7 8 L12 15 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/></svg><div><b>FD235</b></div></div>
+        <div><div class="code">KHH</div><div class="t">17:00</div><div class="muted">高雄</div></div>
+      </div>
+    </div>
+  </div>
+  <p class="muted">託運看總重，單件不超過 32 公斤；手提 2 件合計 7 公斤。回程 12:30 櫃檯關閉。</p>
+</section>
+
+<!-- ===== 每日行程 ===== -->
+<section id="plan">
+  <h2><span class="dot" style="background:var(--sky)"></span>每日行程</h2>
+  <div class="days" id="days" role="tablist" aria-label="選擇日期"></div>
+  <div class="card day-panel" id="day-panel" role="tabpanel"></div>
+  <p class="muted" style="margin-top:8px">
+    <span class="tag t-train">電車</span><span class="tag t-bus">巴士</span><span class="tag t-car">自駕</span><span class="tag t-plane">飛機</span><span class="tag t-walk">步行</span>
+  </p>
+</section>
+
+<!-- ===== 待辦 ===== -->
+<section id="todo">
+  <h2><span class="dot" style="background:var(--green)"></span>待辦清單</h2>
+  <div class="progress" aria-hidden="true"><i id="todo-bar" style="width:0"></i></div>
+  <p class="muted" id="todo-count" style="margin:-4px 0 10px"></p>
+  <ul class="todos" id="todos"></ul>
+</section>
+
+<!-- ===== 住宿 ===== -->
+<section id="stay">
+  <h2><span class="dot" style="background:var(--yellow)"></span>住宿</h2>
+  <div class="stays">
+    <div class="card stay">
+      <div class="ic" style="background:var(--coral-l)">🏠</div>
+      <div><h3>東京住宿 A</h3>
+        <p>前段 2 晚・¥25,328</p>
+        <p class="muted">車站走路 3 分・詳細資料看 Notion</p></div>
+    </div>
+    <div class="card stay">
+      <div class="ic" style="background:var(--yellow-l)">🏨</div>
+      <div><h3>御殿場住宿</h3>
+        <p>1 晚・¥8,980</p>
+        <p class="muted">高速巴士下車處附近，隔天走路去借車</p></div>
+    </div>
+    <div class="card stay">
+      <div class="ic" style="background:var(--sky-l)">🗻</div>
+      <div><h3>河口湖住宿</h3>
+        <p>2 晚・¥36,000</p>
+        <p class="muted">富士山側雙人房、不含餐・入住 16:00–24:00、退房 10:00</p></div>
+    </div>
+    <div class="card stay">
+      <div class="ic" style="background:var(--green-l)">🛏️</div>
+      <div><h3>東京住宿 B</h3>
+        <p>後段 4 晚・¥47,100</p>
+        <p class="muted">車站走路 3 分・有 IH 爐、洗衣機・沒有電梯</p></div>
+    </div>
+    <div class="card stay">
+      <div class="ic" style="background:var(--yellow-l)">🚗</div>
+      <div><h3>租車：御殿場站前</h3>
+        <p>3 天・小型自排車</p>
+        <p class="muted">取車時現場付雪胎＋ETC ¥6,930，帶確認信</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 記帳 ===== -->
+<section id="money">
+  <h2><span class="dot" style="background:var(--coral)"></span>記帳</h2>
+
+  <div class="sum-grid">
+    <div><span>總花費</span><b id="s-total">–</b></div>
+    <div style="background:var(--coral-l)"><span>1豬 負擔</span><b id="s-p1">–</b></div>
+    <div style="background:var(--sky-l)"><span>定遠 負擔</span><b id="s-p2">–</b></div>
+  </div>
+  <div class="settle" id="settle">–</div>
+
+  <form class="card form" id="form" autocomplete="off">
+    <div class="full"><label for="f-name">項目</label><input id="f-name" required placeholder="例如：一蘭拉麵"></div>
+    <div><label for="f-date">日期</label><input id="f-date" type="date" min="2026-10-01" max="2026-12-31"></div>
+    <div><label for="f-cat">類別</label>
+      <select id="f-cat"></select></div>
+    <div><label for="f-amt">金額</label><input id="f-amt" type="number" inputmode="decimal" min="0" step="any" required placeholder="0"></div>
+    <div><label>幣別</label><div class="seg" id="f-cur"><button type="button" data-v="JPY" class="on">日圓 ¥</button><button type="button" data-v="TWD">台幣 NT$</button></div></div>
+    <div class="full"><label>誰付的</label><div class="seg" id="f-payer"><button type="button" data-v="1豬" class="on">1豬</button><button type="button" data-v="定遠">定遠</button></div></div>
+    <div class="full"><label>怎麼分</label><div class="seg" id="f-split">
+      <button type="button" data-v="half" class="on">對分</button><button type="button" data-v="p1">全算 1豬</button><button type="button" data-v="p2">全算 定遠</button><button type="button" data-v="custom">自訂</button></div></div>
+    <div class="full" id="custom-wrap" hidden><label for="f-custom">1豬 負擔多少（台幣，剩下算定遠）</label><input id="f-custom" type="number" inputmode="decimal" min="0" step="any"></div>
+    <div class="full preview" id="f-preview">換算：–</div>
+    <div class="full row-btns"><button class="btn" type="submit" id="f-submit">記一筆</button><button class="btn ghost" type="button" id="f-cancel" hidden>取消編輯</button></div>
+  </form>
+
+  <p class="muted" style="margin-top:10px">匯率 ¥1 = NT$ <input id="rate" type="number" step="0.001" min="0" style="width:80px;border:2px solid var(--ink);border-radius:8px;padding:2px 6px;background:#fff"> （只影響之後新增的日圓項目）</p>
+
+  <div class="filters" id="filters"></div>
+  <ul class="list" id="list"></ul>
+
+  <details class="tools">
+    <summary>備份／同步／匯出</summary>
+    <p class="muted">資料只存在這支手機的瀏覽器。換手機或要合併兩人資料時，用「匯出」產生一串文字，貼到對方的「匯入」。</p>
+    <div class="row-btns">
+      <button class="btn ghost" type="button" id="b-export">匯出（複製文字）</button>
+      <button class="btn ghost" type="button" id="b-import">匯入</button>
+      <button class="btn ghost" type="button" id="b-csv">下載 CSV（貼回 Notion）</button>
+      <button class="btn ghost" type="button" id="b-reset">還原成預設資料</button>
+    </div>
+    <textarea id="io" rows="4" style="width:100%;margin-top:10px;border:var(--line);border-radius:12px;padding:8px;font-size:12px;background:#fff" placeholder="匯出的文字會出現在這裡；要匯入就把文字貼進來再按「匯入」"></textarea>
+  </details>
+</section>
+
+<footer class="muted">任何行程改動以 Notion 為準・祝旅途愉快 🗻</footer>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- 安全的 localStorage ---------- */
+const store = {
+  get(k, fallback){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast = msg => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove("show"), 1800); };
+
+/* ---------- 出發倒數 ---------- */
+const DEPART = new Date("2026-12-11T15:10:00+08:00");
+const RETURN = new Date("2026-12-20T17:00:00+08:00");
+function tick(){
+  const now = new Date();
+  if (now >= RETURN){ $("#count").hidden = true; $("#cd-label").textContent = "旅程結束，辛苦了！記得把帳結清 💰"; return; }
+  if (now >= DEPART){ $("#count").hidden = true; $("#cd-label").textContent = "旅行中！玩得開心 ✈️"; return; }
+  const diff = DEPART - now;
+  $("#cd-d").textContent = Math.floor(diff / 864e5);
+  $("#cd-h").textContent = Math.floor(diff / 36e5) % 24;
+  $("#cd-m").textContent = Math.floor(diff / 6e4) % 60;
+}
+tick(); setInterval(tick, 30000);
+
+/* ---------- 每日行程 ---------- */
+// mode: train / bus / car / plane / walk
+const ICONS = {
+  plane:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#FBE3DE" stroke="#3E3A39" stroke-width="3"/><path class="float" d="M10 34 L44 32 Q56 32 56 34 Q56 36 44 36 Z M28 33 L20 20 L26 20 L38 33 Z M28 35 L20 48 L26 48 L38 35 Z M12 34 L10 26 L15 26 L20 33 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/></svg>',
+  tokyo:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#E3F1F7" stroke="#3E3A39" stroke-width="3"/><g class="float"><path d="M30 10 L34 10 L44 52 L20 52 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><rect x="23" y="26" width="18" height="6" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2.5"/><rect x="21" y="40" width="22" height="6" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2.5"/></g></svg>',
+  bus:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#FCF1D3" stroke="#3E3A39" stroke-width="3"/><g class="float"><rect x="12" y="20" width="40" height="24" rx="7" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><rect x="17" y="25" width="10" height="8" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2"/><rect x="30" y="25" width="10" height="8" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2"/><circle cx="21" cy="46" r="4" fill="#3E3A39"/><circle cx="43" cy="46" r="4" fill="#3E3A39"/></g></svg>',
+  safari:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#E7F2E0" stroke="#3E3A39" stroke-width="3"/><g class="float"><circle cx="32" cy="34" r="15" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><circle cx="20" cy="22" r="5" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><circle cx="44" cy="22" r="5" fill="#F6D27A" stroke="#3E3A39" stroke-width="3"/><circle cx="26" cy="32" r="2" fill="#3E3A39"/><circle cx="38" cy="32" r="2" fill="#3E3A39"/><ellipse cx="32" cy="39" rx="5" ry="3.5" fill="#fff" stroke="#3E3A39" stroke-width="2"/></g></svg>',
+  fuji:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#E3F1F7" stroke="#3E3A39" stroke-width="3"/><g class="float"><path d="M8 48 L28 20 Q32 15 36 20 L56 48 Z" fill="#A8D3E6" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><path d="M23 27 L28 20 Q32 15 36 20 L41 27 L37 25 L32 30 L27 25 Z" fill="#fff" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round"/></g></svg>',
+  car:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#E7F2E0" stroke="#3E3A39" stroke-width="3"/><g class="float"><path d="M12 40 L14 30 Q16 24 22 24 L42 24 Q48 24 50 30 L52 40 Z" fill="#B9DAA5" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><rect x="20" y="27" width="10" height="7" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2"/><rect x="34" y="27" width="10" height="7" rx="2" fill="#fff" stroke="#3E3A39" stroke-width="2"/><circle cx="21" cy="42" r="5" fill="#3E3A39"/><circle cx="43" cy="42" r="5" fill="#3E3A39"/></g></svg>',
+  bag:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#FBE3DE" stroke="#3E3A39" stroke-width="3"/><g class="float"><path d="M18 24 H46 L44 50 H20 Z" fill="#F2A497" stroke="#3E3A39" stroke-width="3" stroke-linejoin="round"/><path d="M25 24 Q25 14 32 14 Q39 14 39 24" fill="none" stroke="#3E3A39" stroke-width="3"/></g></svg>'
+};
+const MODE = {train:["t-train","電車"],bus:["t-bus","巴士"],car:["t-car","自駕"],plane:["t-plane","飛機"],walk:["t-walk","步行"]};
+
+const DAYS = [
+ {d:"12/11",w:"五",icon:"plane",title:"出發！抵達東京",sub:"純移動日，晚餐靠便利商店",items:[
+  ["15:10","高雄起飛 GK018","plane",0,"","抵達成田第三航廈"],
+  ["19:40","成田落地，入境領行李（抓 1 小時）","",0,""],
+  ["20:40","走到第二航廈車站（約 15 分）","walk",0,"","第三航廈沒有車站，也可搭免費接駁巴士 3 分"],
+  ["21:15","Skyliner 到日暮里","train",0,"","末班 22:30，緩衝夠"],
+  ["22:00","日暮里轉山手線到住處（約 6 分）","train",0,""],
+  ["22:30","入住東京住宿 A","walk",0,"","車站走路 3 分"]]},
+ {d:"12/12",w:"六",icon:"tokyo",title:"東京整天",sub:"自由安排",items:[
+  ["上午","（可選）神宮外苑銀杏大道","train",0,"","銀杏 11 月底最美，12 月中開始落葉，早點去"],
+  ["整天","東京自由逛","train",0,""]]},
+ {d:"12/13",w:"日",icon:"bus",title:"東京 → 御殿場",sub:"大半天在東京，傍晚出發",items:[
+  ["上午","退房，29 吋大箱寄放在東京住宿 A","walk",0,"","要先問房東能不能放到 12/16"],
+  ["11:00","叢林巴士改時段的最後期限","",0,"","不改就不用管"],
+  ["白天","東京自由逛","train",0,""],
+  ["傍晚","山手線到新宿（約 16 分）","train",0,""],
+  ["傍晚","高速巴士 新宿 → 御殿場站","bus",0,"todo","選終點「御殿場駅」的班次，約 1 小時 55 分"],
+  ["晚上","入住御殿場住宿","walk",0,""]]},
+ {d:"12/14",w:"一",icon:"safari",title:"富士野生動物園 → 河口湖",sub:"開車 55.7 公里，約 1 小時 12 分",items:[
+  ["09:00","起床、退房","",0,""],
+  ["09:30","借車","car",0,"","付雪胎＋ETC ¥6,930，帶確認信"],
+  ["10:00","抵達動物園，出示 My SAFARI 入園券","car",0,"","不能用截圖，手機要能上網"],
+  ["10:30","自己開車繞猛獸區（約 50 分）","car",1,"","車窗車門絕對不能開"],
+  ["11:30","停車、互動區走走","walk",0,""],
+  ["12:15","超級叢林巴士（約 60 分）","bus",1,"","12:05 前到巴士站・很冷，穿厚外套戴手套"],
+  ["13:15","午餐","",0,""],
+  ["14:15","出發往河口湖（約 45–50 分）","car",0,""],
+  ["15:00","大石公園看富士山","car",1,"","天黑前還有 1 個多小時"],
+  ["16:00","入住河口湖住宿","",0,""]]},
+ {d:"12/15",w:"二",icon:"fuji",title:"河口湖整天自駕",sub:"10 點出門，16:00 前結束開車",items:[
+  ["10:00","新倉山淺間公園：五重塔＋富士山","car",1,"","最經典的那張照片"],
+  ["中午","忍野八海（停車要付費）","car",0,""],
+  ["下午","天上山纜車／山中湖／西湖 挑一個","car",0,""],
+  ["下午","鳴澤冰穴、富岳風穴（熔岩洞窟）","car",0,"","有空再去"],
+  ["16:00","結束開車，回飯店","car",0,"","12 月約 16:30 天黑"]]},
+ {d:"12/16",w:"三",icon:"car",title:"河口湖 → 御殿場還車 → 東京",sub:"早上看富士山的機率比下午高",items:[
+  ["10:00","河口湖最後走走","car",0,""],
+  ["12:00","午餐","",0,""],
+  ["14:00","出發往御殿場（約 1 小時）","car",1,"","一定要這時候走，避免天黑開車"],
+  ["15:00","還車","car",0,""],
+  ["16:05","高速巴士 御殿場站 → 巴士新宿","bus",0,"todo","建議這班（平日）；15:05 太趕。最晚 20:35"],
+  ["18:00","抵達新宿，山手線回住處（約 16 分）","train",0,""],
+  ["18:30","到東京住宿 A 拿 29 吋 → 入住東京住宿 B","walk",0,"","兩間在同一站旁"]]},
+ {d:"12/17",w:"四",icon:"tokyo",title:"東京整天",sub:"自由安排",items:[
+  ["整天","東京自由逛","train",0,""],
+  ["晚上","餐廳（12/17 或 12/18 擇一）","",0,"todo"]]},
+ {d:"12/18",w:"五",icon:"tokyo",title:"東京整天",sub:"自由安排",items:[
+  ["整天","東京自由逛","train",0,""]]},
+ {d:"12/19",w:"六",icon:"bag",title:"最後採買日",sub:"所有採買、打包都要今天完成",items:[
+  ["白天","最後採買","train",1,""],
+  ["晚上","打包、確認回程託運重量","",0,"","回程行李會比去程重"]]},
+ {d:"12/20",w:"日",icon:"plane",title:"回家囉",sub:"市區時間歸零",items:[
+  ["08:30","退房","",0,""],
+  ["09:00","出發往成田","train",0,""],
+  ["10:30","抵達成田第二航廈，報到","",0,"","伴手禮在機場買（免稅）"],
+  ["12:30","廉航櫃檯關閉","",1,"","起飛前 60 分，準時不等人"],
+  ["13:30","FD235 起飛 → 17:00 高雄","plane",0,""]]}
+];
+
+const daysEl = $("#days"), panel = $("#day-panel");
+DAYS.forEach((day, i) => {
+  const b = document.createElement("button");
+  b.className = "day-btn"; b.type = "button"; b.setAttribute("role","tab");
+  b.innerHTML = `<b>${day.d.slice(3)}</b><span>12月・${day.w}</span>`;
+  b.addEventListener("click", () => showDay(i, true));
+  daysEl.appendChild(b);
+});
+function showDay(i, animate){
+  const day = DAYS[i];
+  [...daysEl.children].forEach((b, j) => { b.classList.toggle("on", j === i); b.setAttribute("aria-selected", j === i); });
+  panel.innerHTML = `<div class="day-title">${ICONS[day.icon]}<div><h3>${day.d}（${day.w}）${esc(day.title)}</h3><p class="muted">${esc(day.sub)}</p></div></div>
+    <ul class="tl">${day.items.map(([t, what, mode, must, flag, note]) => `
+      <li class="${must ? "key" : ""}"><time>${t}</time><div class="what">
+        ${mode ? `<span class="tag ${MODE[mode][0]}">${MODE[mode][1]}</span>` : ""}${esc(what)}
+        ${must ? '<span class="must">必去</span>' : ""}${flag === "todo" ? '<span class="todo-tag">待訂</span>' : ""}
+        ${note ? `<span class="note">${esc(note)}</span>` : ""}</div></li>`).join("")}</ul>`;
+  if (animate){ panel.classList.remove("bounce"); void panel.offsetWidth; panel.classList.add("bounce"); }
+  store.set("trip.day", i);
+}
+// 旅行期間自動跳到今天
+(function(){
+  const now = new Date(Date.now() + 9 * 36e5); // 日本時間
+  const md = `${now.getUTCMonth()+1}/${String(now.getUTCDate()).padStart(2,"0")}`;
+  const today = now.getUTCFullYear() === 2026 ? DAYS.findIndex(d => d.d === md) : -1;
+  const saved = store.get("trip.day", 0);
+  const i = today >= 0 ? today : (Number.isInteger(saved) && saved < DAYS.length ? saved : 0);
+  showDay(i, false);
+  daysEl.children[i].scrollIntoView({block:"nearest", inline:"center"});
+})();
+
+/* ---------- 待辦 ---------- */
+const TODOS = [
+  ["bus13","訂 12/13 高速巴士 新宿 → 御殿場站","11/13（五）台灣時間 09:00 開放・發車オーライネット，刷卡 97 折"],
+  ["bus16","訂 12/16 高速巴士 御殿場站 → 新宿（建議 16:05）","11/16（一）台灣時間 09:00 開放"],
+  ["host1","問東京住宿 A 房東：能不能保管 29 吋（12/13–16）、迷你廚房能不能煮飯","免費取消期限前要問"],
+  ["host2","問東京住宿 B 房東：房間在幾樓（沒有電梯）、有沒有浴缸",""],
+  ["bag","確認機票有沒有含託運，沒有就網路加購（回程買多一點）","亞航現場只能加購 15 公斤而且很貴"],
+  ["license","辦駕照日文譯本（監理站）","要開車的人都要辦"],
+  ["sim","買 eSIM／網卡","入園券要手機上網才能出示"],
+  ["ins","保旅平險",""],
+  ["vjw","填 Visit Japan Web",""],
+  ["food","預約 12/17 或 12/18 的餐廳",""],
+  ["safari","✓ 已買動物園入園券＋超級叢林巴士","12/14 12:15，改時段期限 12/13 11:00"],
+  ["car","✓ 已訂車＋雪胎＋ETC",""],
+  ["stay","✓ 所有住宿都已訂好",""]
+];
+const DONE_DEFAULT = {safari:true, car:true, stay:true};
+let done = store.get("trip.todos", DONE_DEFAULT);
+function renderTodos(){
+  $("#todos").innerHTML = TODOS.map(([id, text, when]) => `
+    <li><label><input type="checkbox" data-id="${id}" ${done[id] ? "checked" : ""}><span>${esc(text.replace(/^✓ /,""))}${when ? `<span class="when">${esc(when)}</span>` : ""}</span></label></li>`).join("");
+  const n = TODOS.filter(t => done[t[0]]).length;
+  $("#todo-bar").style.width = (n / TODOS.length * 100) + "%";
+  $("#todo-count").textContent = `完成 ${n} / ${TODOS.length}`;
+}
+$("#todos").addEventListener("change", e => {
+  if (!e.target.dataset.id) return;
+  done[e.target.dataset.id] = e.target.checked; store.set("trip.todos", done); renderTodos();
+});
+renderTodos();
+
+/* ---------- 記帳 ---------- */
+const CATS = ["餐飲","交通","門票","購物","住宿","機票","租車","其他"];
+const CAT_COLOR = {餐飲:"#FBE3DE",交通:"#E3F1F7",門票:"#FCF1D3",購物:"#E7F2E0",住宿:"#FCF1D3",機票:"#FBE3DE",租車:"#E7F2E0",其他:"#fff"};
+// 預設資料：照 Notion「💰 花費記錄」已付款的項目
+// split: half 對分 / p1 全算1豬 / p2 全算定遠 / custom（s1 = 1豬負擔台幣）
+const SEED = [
+  {name:"來回機票（2 人）",date:"2026-10-01",cat:"機票",cur:"TWD",amt:30931,twd:30931,payer:"1豬",split:"half"},
+  {name:"御殿場住宿 1 晚",date:"2026-12-13",cat:"住宿",cur:"JPY",amt:8980,twd:1810,payer:"1豬",split:"half"},
+  {name:"河口湖住宿 2 晚",date:"2026-12-14",cat:"住宿",cur:"JPY",amt:36000,twd:7200,payer:"1豬",split:"half"},
+  {name:"東京住宿 A 2 晚",date:"2026-12-11",cat:"住宿",cur:"JPY",amt:25328,twd:5066,payer:"1豬",split:"half"},
+  {name:"東京住宿 B 4 晚",date:"2026-12-16",cat:"住宿",cur:"JPY",amt:47100,twd:9420,payer:"1豬",split:"half"},
+  {name:"租車 3 天（含保險）",date:"2026-12-14",cat:"租車",cur:"TWD",amt:4290,twd:4290,payer:"定遠",split:"p1"},
+  {name:"雪胎＋ETC 卡（取車時付）",date:"2026-12-14",cat:"租車",cur:"JPY",amt:6930,twd:1386,payer:"定遠",split:"custom",s1:210},
+  {name:"富士野生動物園 入園券 ×2",date:"2026-12-14",cat:"門票",cur:"JPY",amt:5400,twd:1080,payer:"1豬",split:"half"},
+  {name:"超級叢林巴士 12/14 12:15 ×2",date:"2026-12-14",cat:"門票",cur:"JPY",amt:4200,twd:840,payer:"1豬",split:"half"}
+].map((r, i) => ({id:"seed" + i, ...r}));
+
+let rows = store.get("trip.money", null);
+if (!Array.isArray(rows)) rows = SEED.map(r => ({...r}));
+let rate = store.get("trip.rate", 0.2);
+let editing = null, filter = "全部";
+const fmt = n => "NT$" + Math.round(n).toLocaleString("zh-TW");
+
+function shares(r){
+  if (r.split === "p1") return [r.twd, 0];
+  if (r.split === "p2") return [0, r.twd];
+  if (r.split === "custom"){ const a = Math.min(Math.max(+r.s1 || 0, 0), r.twd); return [a, r.twd - a]; }
+  return [r.twd / 2, r.twd / 2];
+}
+function save(){ if (!store.set("trip.money", rows)) toast("瀏覽器不讓存檔，記得匯出備份"); }
+
+function renderMoney(){
+  let total = 0, p1 = 0, p2 = 0, paid1 = 0;
+  rows.forEach(r => { const [a, b] = shares(r); total += r.twd; p1 += a; p2 += b; if (r.payer === "1豬") paid1 += r.twd; });
+  $("#s-total").textContent = fmt(total); $("#s-p1").textContent = fmt(p1); $("#s-p2").textContent = fmt(p2);
+  const net = paid1 - p1; // >0：1豬多付，定遠要還
+  $("#settle").innerHTML = Math.abs(net) < 1 ? "兩人目前打平 🎉"
+    : net > 0 ? `定遠 要給 1豬 <b>${fmt(net)}</b>` : `1豬 要給 定遠 <b>${fmt(-net)}</b>`;
+
+  const cats = ["全部", ...CATS.filter(c => rows.some(r => r.cat === c))];
+  if (!cats.includes(filter)) filter = "全部";
+  $("#filters").innerHTML = cats.map(c => `<button type="button" data-c="${c}" class="${c === filter ? "on" : ""}">${c}</button>`).join("");
+
+  const shown = rows.filter(r => filter === "全部" || r.cat === filter)
+    .sort((a, b) => (b.date || "").localeCompare(a.date || "") || (b.ts || 0) - (a.ts || 0));
+  $("#list").innerHTML = shown.length ? shown.map(r => {
+    const [a, b] = shares(r);
+    const orig = r.cur === "JPY" ? `¥${Number(r.amt).toLocaleString("zh-TW")}・` : "";
+    return `<li class="item">
+      <div class="name"><span class="cat" style="background:${CAT_COLOR[r.cat] || "#fff"}">${esc(r.cat)}</span>${esc(r.name)}</div>
+      <div class="amt">${fmt(r.twd)}</div>
+      <div class="meta">${esc((r.date || "").slice(5).replace("-","/"))}・${orig}${esc(r.payer)} 付</div>
+      <div class="split">1豬 ${Math.round(a).toLocaleString()}／定遠 ${Math.round(b).toLocaleString()}</div>
+      <div class="acts"><button type="button" data-edit="${r.id}">修改</button><button type="button" data-del="${r.id}">刪除</button></div></li>`;
+  }).join("") : '<li class="muted">還沒有紀錄</li>';
+}
+
+/* 表單 */
+CATS.forEach(c => { const o = document.createElement("option"); o.textContent = c; $("#f-cat").appendChild(o); });
+$("#rate").value = rate;
+function segVal(id){ return $(`#${id} .on`).dataset.v; }
+function setSeg(id, v){ [...$(`#${id}`).children].forEach(b => b.classList.toggle("on", b.dataset.v === v)); }
+["f-cur","f-payer","f-split"].forEach(id => $("#" + id).addEventListener("click", e => {
+  if (!e.target.dataset.v) return; setSeg(id, e.target.dataset.v); updatePreview();
+}));
+function todayStr(){ const d = new Date(Date.now() + 9 * 36e5); return d.toISOString().slice(0, 10); }
+function formTwd(){
+  const amt = parseFloat($("#f-amt").value) || 0;
+  if (segVal("f-cur") === "TWD") return amt;
+  // 編輯舊的日圓項目且金額沒改：保留原本的台幣（可能是信用卡實際金額）
+  if (editing && editing.cur === "JPY" && +editing.amt === amt) return editing.twd;
+  return Math.round(amt * rate);
+}
+function updatePreview(){
+  $("#custom-wrap").hidden = segVal("f-split") !== "custom";
+  const twd = formTwd(), cur = segVal("f-cur");
+  const tmp = {twd, split:segVal("f-split"), s1:parseFloat($("#f-custom").value) || 0};
+  const [a, b] = shares(tmp);
+  $("#f-preview").textContent = (cur === "JPY" ? `≈ ${fmt(twd)}・` : "") + `1豬 ${Math.round(a).toLocaleString()}／定遠 ${Math.round(b).toLocaleString()}`;
+}
+["f-amt","f-custom"].forEach(id => $("#" + id).addEventListener("input", updatePreview));
+$("#rate").addEventListener("change", e => { const v = parseFloat(e.target.value); if (v > 0){ rate = v; store.set("trip.rate", v); updatePreview(); } });
+
+function resetForm(){
+  editing = null; $("#form").reset(); $("#f-date").value = todayStr(); $("#f-cat").value = "餐飲";
+  setSeg("f-cur","JPY"); setSeg("f-payer","1豬"); setSeg("f-split","half");
+  $("#f-submit").textContent = "記一筆"; $("#f-cancel").hidden = true; updatePreview();
+}
+$("#form").addEventListener("submit", e => {
+  e.preventDefault();
+  const amt = parseFloat($("#f-amt").value);
+  if (!(amt > 0)) { toast("金額要大於 0"); return; }
+  const r = {
+    id: editing ? editing.id : "r" + Date.now(), ts: editing ? editing.ts : Date.now(),
+    name: $("#f-name").value.trim(), date: $("#f-date").value, cat: $("#f-cat").value,
+    cur: segVal("f-cur"), amt, twd: formTwd(), payer: segVal("f-payer"), split: segVal("f-split"),
+    s1: parseFloat($("#f-custom").value) || 0
+  };
+  if (editing) rows = rows.map(x => x.id === r.id ? r : x); else rows.push(r);
+  save(); toast(editing ? "已更新" : "記好了 ✍️"); resetForm(); renderMoney();
+});
+$("#f-cancel").addEventListener("click", resetForm);
+$("#filters").addEventListener("click", e => { if (e.target.dataset.c){ filter = e.target.dataset.c; renderMoney(); } });
+$("#list").addEventListener("click", e => {
+  const del = e.target.dataset.del, ed = e.target.dataset.edit;
+  if (del){
+    if (e.target.dataset.sure){ rows = rows.filter(r => r.id !== del); save(); renderMoney(); toast("已刪除"); }
+    else { e.target.dataset.sure = "1"; e.target.textContent = "再按一次確認"; }
+  }
+  if (ed){
+    const r = rows.find(x => x.id === ed); editing = r;
+    $("#f-name").value = r.name; $("#f-date").value = r.date; $("#f-cat").value = r.cat; $("#f-amt").value = r.amt;
+    setSeg("f-cur", r.cur); setSeg("f-payer", r.payer); setSeg("f-split", r.split); $("#f-custom").value = r.s1 || "";
+    $("#f-submit").textContent = "儲存修改"; $("#f-cancel").hidden = false; updatePreview();
+    $("#form").scrollIntoView({block:"start"});
+  }
+});
+
+/* 備份／匯入／CSV */
+$("#b-export").addEventListener("click", async () => {
+  const text = JSON.stringify(rows); $("#io").value = text;
+  try { await navigator.clipboard.writeText(text); toast("已複製，貼給對方吧"); } catch(e){ $("#io").select(); toast("請手動複製下方文字"); }
+});
+$("#b-import").addEventListener("click", () => {
+  let data; try { data = JSON.parse($("#io").value); } catch(e){ toast("文字格式不對"); return; }
+  if (!Array.isArray(data)) { toast("文字格式不對"); return; }
+  // 合併：同 id 以匯入的為準，其他保留
+  const map = new Map(rows.map(r => [r.id, r]));
+  data.forEach(r => { if (r && r.id && r.name && typeof r.twd === "number") map.set(r.id, r); });
+  rows = [...map.values()]; save(); renderMoney(); $("#io").value = ""; toast("匯入完成");
+});
+$("#b-csv").addEventListener("click", () => {
+  const head = ["項目","日期","類別","幣別","原幣金額","台幣金額","1豬","定遠","付款人"];
+  const lines = rows.map(r => { const [a, b] = shares(r);
+    return [r.name, r.date, r.cat, r.cur, r.amt, Math.round(r.twd), Math.round(a), Math.round(b), r.payer]
+      .map(v => `"${String(v).replace(/"/g,'""')}"`).join(","); });
+  const blob = new Blob(["﻿" + [head.join(","), ...lines].join("\n")], {type:"text/csv"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "日本旅遊花費.csv"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+$("#b-reset").addEventListener("click", e => {
+  if (!e.target.dataset.sure){ e.target.dataset.sure = "1"; e.target.textContent = "會清掉自己新增的，再按一次確認"; return; }
+  rows = SEED.map(r => ({...r})); save(); renderMoney(); delete e.target.dataset.sure; e.target.textContent = "還原成預設資料"; toast("已還原");
+});
+
+resetForm(); renderMoney();
+
+/* ---------- 選單跟著捲動亮起 ---------- */
+const links = [...document.querySelectorAll(".nav a")];
+const spy = new IntersectionObserver(es => es.forEach(en => {
+  if (en.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
+}), {rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll("main section").forEach(s => spy.observe(s));
+})();
+</script>
+</body>
+</html>
